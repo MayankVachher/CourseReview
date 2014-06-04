@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% include 'templates/home/navbar.html' %}
+<html>
+<body>
+<br>
+{% load staticfiles %}
+<div class="container">
+    <h2 class="faq_h2">Features</h2>
+
+    <p style="width:80%; margin-left: auto;  margin-right: auto; padding-left: 1em">
+        <img src="{% static "img/college_student.jpg" %}"
+             style="padding-left: 1em; padding-bottom: 1em; float: right; max-height:25%;"/>
+        We could tell you our features in a point-by-point systematic manner. But we're better than that.
+        We'll tell you where it all started instead. Once upon a time, there was a coffee-guzzling,
+        intelligence-smuggling,
+        stress-grumblin and didn't-get-enough-sleep-out-of-the-bed tumblin, pen-fumbling head-rumblin college student.
+        <br/><br/>
+        Picking his courses gave him a hard time. Until one fine day...
+        <img src="{% static "img/features1.jpg" %}"/>
+        <img src="{% static "img/features2.jpg" %}"/>
+        <br/>
+        <b> 6 months in, that is exactly what our 5-man team of <a href="/contact"> code-husslin deadline-bustlin
+            grumpies </a> does. </b>
+        <br/><br/>
+    </p>
+</div>
+{% include 'templates/home/footer.html' %}
+</body>
+</html>

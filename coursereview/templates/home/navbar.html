@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="shortcut icon" href="[[ STATIC_URL ]]img/glyphicons-halflings.png"/-->
+
+    <title>{{ title }}</title>
+
+    <!-- doc: http://caroufredsel.dev7studios.com/configuration.php -->
+    {% load staticfiles %}
+    <link href="{% static "css/bootstrap.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/bootstrap-responsive.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/coursereview.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/font-awesome.min.css" %}" media="screen" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico"/>
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static "js/Other/jquery-ui.js" %}"></script>
+    <script src="{% static 'js/carouFredSel-6.2.1/jquery.carouFredSel-6.2.1-packed.js' %}"></script>
+    <script src="{% static "js/coursereview.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+
+    <script>
+        $(function () {
+            $('#nav li a').click(function (e) {
+                $('#nav li').removeClass();
+                $($(this).addClass('active'));
+            });
+        });
+    </script>
+
+</head>
+
+<!-- ###   Navbar   ### -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="logo" href="/"><img src="{% static "img/logo.png" %}" style="height:60px;"></a>
+            <ul class="nav pull-right">
+                <li id="home" class='{{ homeNavClass }}'><a href="/">Home</a></li>
+                <li id="features" class='{{ featuresNavClass }}'><a href="/features">Features</a></li>
+                <li id="faq" class='{{ faqNavClass }}'><a href="/faq">FAQ</a></li>
+                <li id="TablePicker" class='{{ TTableClass }}'><a href="/ttable">Pick Courses!</a></li>
+
+                <li class="signin">
+                    <div onclick="location.href='/google/login/'">
+                        <button class="btn" id="signin-button" onmouseover="showIIITD(this)" title="For iiitd.ac.in accounts only.">
+                            <i class="icon-signin"></i> Sign in
+                        </button>
+                        <script>
+                            function showIIITD(x){
+                                x.tooltip({
+                                  position: "center right",
+                                  offset: [-2, 10],
+                                  effect: "fade",
+                                  opacity: 0.7
+                                  });
+                            }
+                        </script>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="{% static "js/coursereview.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+</html>

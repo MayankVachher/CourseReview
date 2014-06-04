@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+{% include 'templates/home/user_navbar.html' %}
+{% load staticfiles %}
+
+<html>
+<head>
+    <title> Review Details </title>
+</head>
+<body>
+<div class="container">
+    <br />
+<div class="inner-page">
+	<div class="row-fluid">
+		<div class="span12">
+			<h3>
+				{{ course.name }} Course Overview
+			</h3>
+		</div>
+	</div>
+    <br /><br />
+	<div class="row-fluid">
+    {% if not none %}
+		<div class="span8">
+			<p>
+                Total Reviews: {{ count }} <br />
+                This course has been previously taught by: {{ profs }}
+			</p>
+
+            <h4> Overall Rating Given: &nbsp; &nbsp; &nbsp; {{ overall }} / 10 </h4>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{ bar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ bar }}%; background-color: lawngreen;">
+                <span class="sr-only"> &nbsp;  </span>
+              </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                <b>Top Reviews:</b>
+                    <tr>
+                        <th> Upvotes </th>
+                        <th> By </th>
+                        <th> Score Given </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for b in lrevs %}
+                    <tr class='clickableRow' href="/seereview/?revid={{ b.1 }}">
+                        <td> {{ b.0 }} </td>
+                        <td> {{ b.3 }} </td>
+                        <td> {{ b.2 }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="span2">
+            <a href="#"
+              onclick="
+                window.open(
+                  'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+                  'facebook-share-dialog',
+                  'width=626,height=436');
+                return false;">
+              <img src="{% static "img/fb_share.jpg" %}"/>
+            </a></div>
+
+            <div class="span2">
+                <button type="submit" class="btn btn-primary" id="Watch" onclick="toggleText(this.id);"
+                        style="background: blue; display: none">Add in Watchlist</button>
+                <button type="submit" class="btn btn-primary" id="Unwatch" onclick="toggleText(this.id);"
+                        style="background: #000000; display: none">Unwatch</button>
+            </div>
+        
+		</div>
+		<div class="span4">
+			<dl class="dl-horizontal">
+				<dt>
+					Ease of Scoring:
+				</dt>
+				<dd>
+					{{ rev.easeOfScoring }}
+				</dd>
+                <dt>
+					Industry Appl.:
+				</dt>
+				<dd>
+					{{ rev.industryApplication }}
+				</dd>
+                <dt>
+					Interesting:
+				</dt>
+				<dd>
+					{{ rev.interesting }}
+				</dd>
+                <dt>
+					Ease of Content:
+				</dt>
+				<dd>
+					{{ rev.easeOfContent }}
+				</dd>
+                <dt>
+					Workload:
+				</dt>
+				<dd>
+					{{ rev.workload }}
+				</dd>
+                <dt>
+					Quality of Teach.:
+				</dt>
+				<dd>
+					{{ rev.qualityTeaching }}
+				</dd>
+                <dt>
+					Relevance:
+				</dt>
+				<dd>
+					{{ rev.relevance }}
+				</dd>
+                <dt>
+					Technicality:
+				</dt>
+				<dd>
+					{{ rev.technicality }}
+				</dd>
+                <dt>
+					Workload:
+				</dt>
+				<dd>
+					{{ rev.workload }}
+				</dd>
+                <dt>
+					Project Load:
+				</dt>
+				<dd>
+					{{ rev.projectBurden }}
+				</dd>
+			</dl>
+		</div>
+    {% else %}
+        <div class="alert"> There are no reviews to show. </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary" id="Watch" onclick="toggleText(this.id);"
+                    style="background: blue; display: none">Add in Watchlist</button>
+            <button type="submit" class="btn btn-primary" id="Unwatch" onclick="toggleText(this.id);"
+                    style="background: #000000; display: none">Unwatch</button>
+        </div>
+    {% endif %}
+	</div>
+    <br /><br />
+</div>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $(".clickableRow").click(function () {
+            window.document.location = $(this).attr("href");
+        });
+
+        $(".clickableRow").hover(function () {
+            this.style.opacity = 0.5;
+        }, function () {
+            this.style.opacity = 1;
+        });
+        /*
+        $(".clickableRow").onmouseout(function () {
+            this.style.opacity = 1;
+        });*/
+    });
+
+    $(document).ready(toggleText("blank"));
+
+    function toggleText(kind)  {
+        $.getJSON("/watch/", {myCourse: "{{ course.courseID }}", text: kind, myUser: "{{ user }}" }, function(json) {
+           var id = document.getElementById(json['watchText']);
+           if (json['watchText'] == "Watch") {
+               var nonid = document.getElementById("Unwatch");
+               nonid.style.display = "none";
+               id.style.display = "block";
+           } else {
+               var nonid = document.getElementById("Watch");
+               nonid.style.display = "none";
+               id.style.display = "block";
+           }
+        });
+    }
+</script>
+{% include 'templates/home/footer.html' %}
+</body>
+
+</html>

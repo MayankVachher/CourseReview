@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="shortcut icon" href="[[STATIC URL]]img/glyphicons-halflings.png"/-->
+
+    <title>{{ title }}</title>
+
+    <!-- doc: http://caroufredsel.dev7studios.com/configuration.php -->
+    {% load staticfiles %}
+    <link href="{% static "css/bootstrap.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/bootstrap-responsive.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/coursereview.css" %}" media="screen" rel="stylesheet">
+    <link href="{% static "css/font-awesome.min.css" %}" media="screen" rel="stylesheet"/>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static "js/Other/jquery-ui.js" %}"></script>
+    <script src="{% static 'js/carouFredSel-6.2.1/jquery.carouFredSel-6.2.1-packed.js' %}"></script>
+    <script src="{% static "js/coursereview.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
+
+</head>
+
+<body>
+
+<!-- ###   Navbar   ### -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            {% load staticfiles %}
+            <a class="logo" href="/home"><img src="{% static "img/logo.png" %}" style="height:60px;"></a>
+            <ul class="nav pull-right">
+                <li class='{{ homeNavClass }}'><a href="/home">Home</a></li>
+                <li class='{{ coursesNavClass }}'><a href="/courses">Courses</a></li>
+                <li class='{{ reviewNavClass }}'><a href="/review/">Write a Review</a>
+                <li class='{{ allrevpage }}'> <a href="/allreviews/">Reviews</a></li>
+                <li class='{{ watchlist }}'> <a href="/watchlist-allCourses/">Watchlist</a></li>
+                    <!--div class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/review">Reviews</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="/review/">Write a Review</a></li>
+                        <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Browse Reviews</a></li>
+                    </ul>
+                    </div-->
+
+                <li class="signout">
+                    <div onclick="location.href='/logout'">
+                        <button class="btn" id="signout-button">
+                            <i class="icon-signin"></i> Log out
+                        </button>
+                    </div>
+                </li>
+                <li>
+                    <div class="feedback" data-toggle="modal" data-target="#Feedback">
+                        <div class="feedback-text"><p></p> <b> F E E D B A C K </b> </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal hide fade" id="Feedback" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4>Please tell us about CourseReview</h4>
+
+                <div class="modal-body">
+                    <form accept-charset="UTF-8" action="/feedbacks/" class="new_feedback" data-remote="true"
+                          enctype="multipart/form-data" id="feedback_form" method="POST">
+                        {% csrf_token %}
+                        <div style="margin:0;padding:0;display:inline">
+                            <input name="utf8" type="hidden" value="&#x2713;"/>
+                        </div>
+                        <div class="form-label-description">Your name and email-id will go with this feedback.</div>
+                        <div style="margin:0;padding:0;display:inline">
+                            <input name="email-id" type="hidden" value="{{ user }}"/>
+                            <input name="user-name" type="hidden" value="{{ name }}"/>
+                        </div>
+                        <div class="form-label-heading">Please:</div>
+                        <input checked="checked" id="feedbacktype" name="feedbacktype" type="radio" value="feature"/>
+                        <span class="form-label-description"> Give a suggestion </span>
+                        <input id="feedbacktype" name="feedbacktype" type="radio" value="bug"/>
+                        <span class="form-label-description"> Report a Bug </span>
+                        <input id="feedbacktype" name="feedbacktype" type="radio" value="say"/>
+                        <span class="form-label-description"> Say </span>
+
+                        <div class="bug" style='display:none' id="feed-bug">
+                            <div class="form-label-heading">Expected Behaviour:</div>
+                            <textarea class="textarea" id="feedback_bug_expected" name="bug_expected"
+                                      style="width: 90%; height: 70px"></textarea>
+                            <div class="form-errors" id="bug_error_expected"></div>
+
+                            <div class="form-label-heading">Current Behaviour:</div>
+                            <textarea class="textarea" id="feedback_bug_current" name="bug_current"
+                                      style="width: 90%; height: 70px"></textarea>
+                            <div class="form-errors" id="bug_error_current"></div>
+
+                            <div class="form-label-heading">Steps to Reproduce:</div>
+                            <textarea class="textarea" id="feedback_bug_steps" name="bug_steps"
+                                      style="width: 90%; height: 70px"></textarea>
+                            <div class="form-errors" id="bug_error_steps"></div>
+                        </div>
+
+                        <div class="feature" id="feed-feature">
+                            <div class="form-label-heading">Message:</div>
+                            <textarea class="textarea" id="feedback_message" name="message"
+                                      style="width: 90%; height: 150px"></textarea>
+                            <div class="form-errors" id="feature_error_msg"></div>
+                        </div>
+
+                        <div class="feature" id="feed-say" style="display: none">
+                            <div class="form-label-heading">Message:</div>
+                            <textarea class="textarea" id="feedback_say" name="say"
+                                      style="width: 90%; height: 150px"></textarea>
+                            <div class="form-errors" id="say_error_msg"></div>
+                        </div>
+
+                        <div class="form-label-heading">Attach a screenshot or file, if any:</div>
+                        <input id="feedback_attachment" name="attachment" type="file"/>
+                        <input id="feedbackButton" name="commit" style="display:none" type="submit"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn Close" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn Send" onclick='$("#feedbackButton").click();'>Send</button>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div id="feedbacksent" class="modal hide fade" tabindex="-1">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4>Please tell us about CourseReview</h4>
+    </div>
+    <div class="modal-body">
+        Feedback sent successfully!
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn">Close</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("input[name=feedbacktype]").change(function(){
+            $('.bug').hide();
+            $('.feature').hide();
+            $("#feed-"+$(this).val()).show('medium');
+            $("#feature_error_msg").hide();
+            $("#bug_error_expected").hide();
+            $("#bug_error_current").hide();
+            $("#bug_error_steps").hide();
+            $("#say_error_msg").hide();
+        });
+    });
+
+    $(document).ready(function() {
+        $("#feedbackButton").click(function() {
+            var error = 0;
+            if ($("input[name=feedbacktype]:checked", "#feedback_form").val() == "feature") {
+                var message = $("#feedback_message").val();
+                if (message == "") {
+                    error = 1;
+                    $("#feature_error_msg").html("* Hey! How could you forget your suggestion.");
+                    $("#feature_error_msg").show();
+                }
+            } else if ($("input[name=feedbacktype]:checked", "#feedback_form").val() == "bug") {
+                var expected = $("#feedback_bug_expected").val();
+                if (expected == "") {
+                    error = 1;
+                    $("#bug_error_expected").html("* Error! Please fill the expected behaviour.");
+                    $("#bug_error_expected").show();
+                }
+                var current = $("#feedback_bug_current").val();
+                if (current == "") {
+                    error = 1;
+                    $("#bug_error_current").html("* Error! Please fill the current behaviour.");
+                    $("#bug_error_current").show();
+                }
+                var steps = $("#feedback_bug_steps").val();
+                if (steps == "") {
+                    error = 1;
+                    $("#bug_error_steps").html("* Error! Please fill the steps to reproduce the bug.");
+                    $("#bug_error_steps").show();
+                }
+            } else {
+                    var say = $("#feedback_say").val();
+                    if (say == "") {
+                        error = 1;
+                        $("#say_error_msg").html("* Hey! How could you forget what you wanted to say.");
+                        $("#say_error_msg").show();
+                    }
+                }
+            if (error) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

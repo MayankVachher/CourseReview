@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+{% include 'templates/home/navbar.html' %}
+{% load staticfiles %}
+<html>
+<head>
+    <link href="{% static "css/font-awesome.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/jquery.accordion.css" %}" media="screen" rel="stylesheet"/>
+    <style type="text/css">
+        body {
+            background-color: #ffffff
+        }
+
+        .accordion-ver ul li {
+            background-color: #ffffff
+        }
+
+        .accordion-ver ul li div {
+            background-color: #ffffff;
+        }
+
+        .accordion-ver ul li h1 {
+            color: #ff0000
+        }
+
+        .accordion-ver ul li div span {
+            color: #000000;
+        }
+
+        .accordion-ver ul li i {
+            font-size: 25px
+        }
+
+        .accordion-ver ul li h1 {
+            font-size: 18px
+        }
+
+        .accordion-ver ul li {
+            border-color: #000000;
+            line-height: 2;
+            text-align: justify;
+        }
+
+        .accordion-ver ul li {
+            border-width: 0px
+        }
+
+        .accordion-ver ul {
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+            -webkit-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+            -moz-box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8)
+        }
+
+        .accordion-ver ul li div span {
+            padding: 25px
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="accordion1">
+        <ul>
+            <li><h1>What is this?</h1>
+
+                <div><span>CourseReview is a portal for students to review, browse and pick courses comprehensively,
+                    on various parameters. These parameters range from "Ease of Scoring" to "Industry Relevance" to
+                    even "Homework or Project Workload".</span>
+                </div>
+            </li>
+
+            <li><h1>What can I do here?</h1>
+
+                <div><span>You can:<br><br>
+                        <ol>
+                            <li><b> Review Courses </b> - Share your good or bad experiences with a course.</li>
+                            <li><b> Read reviews </b> - See what others have said about courses.</li>
+                            <li><b> Evaluate Courses </b>- Based on past reviews, scores and ratings. Filter and sort
+                                them on parameters as you desire.
+                            </li>
+                            <li><b> Pick Course Combinations (under development, for version 3.0) </b>- We'll feed in your timetable, take your preferences,
+                                and give you a list of al valid (non-clashing timings) combinations you can take. What's
+                                more,
+                                you can get aggregated stats on these combinations and sort them as you desire. There is
+                                no better way to plan your semesters (workload, number of working days, minimizing
+                                projects or waiting time between lectures), etc.
+                            </li>
+                        </ol></span>
+                </div>
+            </li>
+
+            <li><h1>Why you guys?</h1>
+
+                <div><span> <ol>
+                    <li> Why not?</li>
+                    <li> Have a look at Q2 - do you know any other website that lets you do ALL that?</li>
+                    <li> Our product is non-commercial and made to <b> genuinely help students </b> (and faculty too,
+                        sometimes).
+                    </li>
+                    <li> Pretty Pweez.</li>
+                </ol></span>
+                </div>
+            </li>
+
+            <li><h1>Are reviews anonymous? Can I criticize the faculty?</h1>
+
+                <div><span>  Yes, if you want them to be. We offer anonymity in submitting reviews. However, we do
+                    recommend that users respect that option and don't use it to flame their faculty.
+                        It is okay to be critical (read: Constructive Criticism). It is NOT okay to be condescending.
+                    Don't get personal. Stay factual.
+                        <br><br> <b>OKAY: </b> Poorly conducted course, couldn't teach concepts. Gave me so much work
+                    that I made Guinness for the youngest heart attack in history.<br>
+                        <b>NOT OKAY: </b> Prof was a !$#@*#&. His whole family is a #*#!&#. May monsters haunt his
+                    unborn grandchildren.<br><br>
+                        <b>Rule of thumb:</b> While we are happy to extend anonymity, if its something you wont want to
+                    put your name next to, please refrain.</span>
+                </div>
+            </li>
+            <li><h1>Can I be traced?</h1>
+
+                <div><span> Ideally, <b> no you cannot be traced.</b> But, in cases of serious disciplinary issues or
+                    disgraceful / untasteful comments that lead the college authorities coming to us, <b> we will give
+                        you away. </b>
+                        <br> <br>
+                        If you were going to post something that spurs this question, we'd say: <b>don't</b>.</span>
+                </div>
+            </li>
+            <li><h1>Who made this?</h1>
+
+                <div><span>
+
+                    <a href="{% static "img/five-headed-naga.jpg" %}" target="_blank">
+                        <img src="{% static "img/five-headed-naga.jpg" %}"
+                         width="80%" style="display: block;margin: 0 auto; border: #002a80"/></a><br>
+                         <div style="text-align: center">with love at <a href="http://iiitd.ac.in/">IIIT Delhi</a>.
+                         To read more, go to our <a href="/contact"> contact us </a> page.</div></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="{% static "js/jquery.js" %}"></script>
+<script src="{% static "js/jquery.accordion.js" %}"></script>
+<script>
+    $("#accordion1").awsAccordion({
+        type: "vertical",
+        cssAttrsVer: {
+            ulWidth: 800,
+            liHeight: 50
+        },
+        startSlide: 1,
+        openCloseHelper: {
+            openIcon: "ok-circle icon-large",
+            closeIcon: "ok-sign icon-large"
+        },
+        openOnebyOne: true,
+        classTab: "active",
+        slideOn: "click",
+        autoPlay: false,
+        autoPlaySpeed: 2000
+    })
+</script>
+
+{% include 'templates/home/footer.html' %}
+</body>
+</html>

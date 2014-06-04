@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+{% include 'templates/home/user_navbar.html' %}
+{% load staticfiles %}
+
+<html>
+<head>
+    <title> Review Details </title>
+</head>
+<body>
+<div class="container">
+    <br />
+<div class="inner-page">
+	<div class="row-fluid">
+		<div class="span12">
+			<h3>
+				{{ rev.course.name }} Review, taught by {{ prof }}
+			</h3>
+		</div>
+	</div>
+    <br /><br />
+	<div class="row-fluid">
+		<div class="span8">
+			<blockquote>
+				<p>
+					{{ rev.comment }}
+				</p> {% if rev.anon %}
+                        <small>Anonymous</small>
+                     {% else %}
+                        <small>{{ reviewer.name }}</small>
+                     {% endif %}
+			</blockquote>
+
+            <h4> Overall Rating Given: &nbsp; &nbsp; &nbsp; {{ overall }} / 10 </h4>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="{{ bar }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ bar }}%; background-color: lawngreen;">
+                <span class="sr-only"> &nbsp;  </span>
+              </div>
+            </div>
+
+
+			<div class="btn-group">
+				<button class="btn btn-mini btn-success" type="button" id="upvote" onclick="vote('up');">
+                    <span class="glyphicon glyphicon-circle-arrow-up"></span>Upvote</button>
+                <button class="btn btn-danger btn-mini" type="button" id="downvote" onclick="vote('down');">
+                    <span class="glyphicon glyphicon-circle-arrow-down"></span>Downvote</button>
+			</div>
+            <span id="votes" class="badge"> {{ rev.upvotes }} </span>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#"
+              onclick="
+                window.open(
+                  'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+                  'facebook-share-dialog',
+                  'width=626,height=436');
+                return false;">
+              <img src="{% static "img/fb_share.jpg" %}"/>
+            </a>
+        
+            &nbsp;&nbsp;&nbsp;
+            <img src="{% static "img/report_button.png" %}" width="50px" onclick="report();"
+                 onmouseover="this.style.opacity=0.5" onmouseout="this.style.opacity=1"/>
+
+            <button type="submit" class="btn btn-primary" id="Watch" onclick="toggleText(this.id);"
+                    style="background: blue; display: none">Add in Watchlist</button>
+            <button type="submit" class="btn btn-primary" id="Unwatch" onclick="toggleText(this.id);"
+                    style="background: #000000; display: none">Unwatch</button>
+
+		</div>
+		<div class="span4">
+			<dl class="dl-horizontal">
+				<dt>
+					Ease of Scoring:
+				</dt>
+				<dd>
+					{{ rev.easeOfScoring }}
+				</dd>
+                <dt>
+					Industry Appl.:
+				</dt>
+				<dd>
+					{{ rev.industryApplication }}
+				</dd>
+                <dt>
+					Interesting:
+				</dt>
+				<dd>
+					{{ rev.interesting }}
+				</dd>
+                <dt>
+					Ease of Content:
+				</dt>
+				<dd>
+					{{ rev.easeOfContent }}
+				</dd>
+                <dt>
+					Workload:
+				</dt>
+				<dd>
+					{{ rev.workload }}
+				</dd>
+                <dt>
+					Quality of Teach.:
+				</dt>
+				<dd>
+					{{ rev.qualityTeaching }}
+				</dd>
+                <dt>
+					Relevance:
+				</dt>
+				<dd>
+					{{ rev.relevance }}
+				</dd>
+                <dt>
+					Technicality:
+				</dt>
+				<dd>
+					{{ rev.technicality }}
+				</dd>
+                <dt>
+					Workload:
+				</dt>
+				<dd>
+					{{ rev.workload }}
+				</dd>
+                <dt>
+					Project Load:
+				</dt>
+				<dd>
+					{{ rev.projectBurden }}
+				</dd>
+			</dl>
+		</div>
+	</div>
+    <br /><br />
+</div>
+</div>
+<script>
+    function vote(kind) {
+      $.getJSON("/vote/", { pk: {{ rev.id }} , vote: kind, myUser: "{{ user }}" }, function(json){
+        //alert("Was successful?: " + json['success'] + "Votes: " + json['votes']);
+        $('#votes').html(json['votes']);
+         // alert(json['myUser']);
+      });
+    }
+    
+    function report() {
+        $.getJSON("/report/", { pk: {{ rev.id }} , myUser: "{{ user }}" }, function(json){
+            alert(json['mess']);
+        });
+    }
+
+    $(document).ready(toggleText("blank"));
+
+    function toggleText(kind)  {
+        $.getJSON("/watch/", {myCourse: "{{ rev.course.courseID }}", text: kind, myUser: "{{ user }}" }, function(json) {
+           var id = document.getElementById(json['watchText']);
+           if (json['watchText'] == "Watch") {
+               var nonid = document.getElementById("Unwatch");
+               nonid.style.display = "none";
+               id.style.display = "block";
+           } else {
+               var nonid = document.getElementById("Watch");
+               nonid.style.display = "none";
+               id.style.display = "block";
+           }
+        });
+    }
+</script>
+{% include 'templates/home/footer.html' %}
+</body>
+
+</html>

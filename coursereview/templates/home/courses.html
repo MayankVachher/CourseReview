@@ -1,0 +1,45 @@
+{% load staticfiles %}
+{% load django_select2_tags %}
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <script src="{% static 'js/select2.js' %}"></script>
+    <link href="{% static "css/select2.css" %}" media="screen" rel="stylesheet"/>
+    {% include 'templates/home/user_navbar.html' %}
+</head>
+
+<body>
+<div class="container">
+    <div class="inner-page">
+        <div class="row">
+            <div class="span11">
+                <h3 class="page-header">Find a Course</h3>
+            </div>
+            <div id="content" class="span11"><br>
+
+                <div class="well well-title">
+                    {% if not form %}
+                        <div>
+                            <span>No courses found in the DB.</span>
+                        </div>
+                    {% elif form %}
+                        <form method="POST" id="courseForm" action="." style="padding-bottom: 0; margin-bottom: 0">
+
+                            <div class="badge pull-right">Hint: You can start typing the title of the course</div>
+                            {% csrf_token %}
+                            <p class="noChoice">{{ form.fieldname.errors.as_text }}</p>
+                            <table>
+                                {{ form }}
+                            </table>
+                            <input id="selectButton" style="display:none" type="submit"/>
+                        </form><br/>
+                        <button type="button" id="Submit" class="btn btn-primary" onclick='$("#selectButton").click();'>Select</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'templates/home/footer.html' %}
+</body>
+</html>

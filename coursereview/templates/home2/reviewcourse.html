@@ -1,0 +1,361 @@
+<!doctype html>
+{% include 'templates/home/user_navbar.html' %}
+
+<html>
+<head>
+    {% load staticfiles %}
+    <link href="{% static "css/Other/jquery-ui.css" %}" media="screen" rel="stylesheet"/>
+    <link href="{% static "css/Other/simple-slider.css" %}" media="screen" rel="stylesheet"/>
+    <script src="{% static "js/Other/simple-slider.js" %}"></script>
+    <script src="{% static "js/Other/jSmiley.js" %}"></script>
+    <script src="{% static "js/civem-0.0.7.min.js" %}"></script>
+
+</head>
+
+<body>
+<div class="container">
+    <div class="inner-page">
+        <div class="row">
+            <div class="span11">
+                <h3 class="page-header">Review a Course</h3>
+            </div>
+
+            <div id="content" class="span11"><br>
+
+                <div id="alertbox" class="alert" style="display:none;">
+                    <!--button type="button" onclick="alert('close')">×</button--></div>
+
+                <form action='/review/' method="POST" id="reviewForm" onsubmit="return(validate());">
+                    <div class="well well-title">Select the year and semester you took your course<br>
+                        <br>
+                        <select name="yearTaken">
+                            {% for i in time %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        &nbsp;&nbsp;&nbsp;
+                        <select name="semTaken">
+                            <option value="1">Winter</option>
+                            <option value="2">Spring</option>
+                        </select>
+                        <span class="badge badge-right"
+                              onClick="dalert('Sorry, we only wish to updates from recent takers of the course in order for your reviews to be helpful for current and prospective students.')">Not listed here?</span>
+                    </div>
+                    <div class="well well-title">Select the professor and the course you took.<br>
+                        <br>
+
+                        <div class="row">
+                            <div class="span3">
+                                <div class="ui-widget">
+                                    <input id="prof" name="faculty" required data-errormessage-value-missing="Sorry, we don't believe in self study!"
+                                           maxlength="50" class="input" type="text" placeholder="Select/Write Prof Here" rel="popover"/>
+                                    &nbsp;&nbsp;&nbsp; </div>
+                            </div>
+                            <div class="span4">
+                                <div class="ui-widget">
+                                    <input id="course" name="course" required data-errormessage-value-missing="What are you reviewing?!"
+                                           maxlength="50" class="input" type="text" placeholder="Select Course Here" rel="popover"/>
+                                    &nbsp;&nbsp;&nbsp; </div>
+                            </div>
+                            <div class="span2">
+                                <label class="radio" for="radio">
+                                    <input value="2cred" id="2cred" name="creditsTaken" type="radio">
+                                    <span>2 Credits</span> <br>
+                                    <input value="4cred" id="4cred" name="creditsTaken" type="radio" checked="checked">
+                                    <span>4 Credits</span> </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well">
+                        <table class="table table-hover table-striped">
+                            <colgroup>
+                                <col span="1" style="width: 60%;">
+                                <col span="1" style="width: 60%;">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th><span class="well-title">Criteria</span></th>
+                                <th><span class="well-title">Rating</span></th>
+                            </tr>
+                            </thead>
+                            <tbody class="review-data">
+                            <tr>
+                                <td>How <strong>hard</strong> were the course contents, concepts and material? <br>
+                                    <span class="muted">Smile if easy!</span>
+                                </td>
+                                <td><input type='text' name="CourseBurden" id="slide" data-slider='true' data-slider-range='0,10'
+                                           data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td>Was the <strong>grading easy</strong> or relentless? <br>
+                                    <span class="muted">Smile if easy!</span>
+                                </td>
+                                <td><input type='text' name="easeOfScoring" id="slide"data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td><strong>How much homework</strong> did you get? <br>
+                                    <span class="muted">Smile if you didn't get much!</span>
+                                </td>
+                                <td><input type='text' name="workload" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td> Could you afford to <strong>miss a few classes?</strong> <br>
+                                    <span class="muted">Smile if you could!</span>
+                                </td>
+                                <td><input type='text' name="easeOfContent" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td> Was the course <strong>relevent to Industry?</strong> <br>
+                                    <span class="muted">Smile if it was relevant!</span>
+                                </td>
+                                <td><input type='text' name="industryApplication" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td> Was the course <strong>interesting?</strong> <br>
+                                    <span class="muted">Smile if it was interesting!</span>
+                                </td>
+                                <td><input type='text' name="interesting" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                             <tr>
+                                <td> How good was the <strong>quality of teaching?</strong> <br>
+                                    <span class="muted">Smile if teaching was exceptional!</span>
+                                </td>
+                                <td><input type='text' name="qualityTeaching" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td> Was the course <strong>relevant according to you?</strong> <br>
+                                    <span class="muted">Smile if the course was relevant!</span>
+                                </td>
+                                <td><input type='text' name="relevance" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                             <tr>
+                                <td> Was the course <strong>technical?</strong> <br>
+                                    <span class="muted">Smile if course wasn't too technical!</span>
+                                </td>
+                                <td><input type='text' name="technicality" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            <tr>
+                                <td> How hard was the <strong>project? (if applicable)</strong> <br>
+                                    <span class="muted">Smile if project was easy!</span>
+                                </td>
+                                <td><input type='text' name="projectBurden" id="slide" data-slider='true'
+                                           data-slider-range='0,10' data-slider-step='1'
+                                           data-slider-snap='true' value='5' data-slider-highlight='true'></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="well well-title">Additional Comments<br>
+                    <br>
+                    <textarea placeholder=
+                                      "Review the course and its conduction here. Please don't flame the professor."
+                              title = "Remember: Good reviews, never abuse."
+                    class="review-comment" id="review-comment" name="comment" maxlength="5000" onkeyup="cleanup(this);"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <div class="align-right">
+                            <span class="separate-anonymous">
+                                <span class="anon-text">Anonymous</span>
+                                <input type="checkbox" name="anonymous" value="True">
+                            </span>
+                                <button type="submit" class="btn btn-primary" id="Submit">Submit</button>
+                                <input class="btn" value="Reset" type="reset" id="Reset">
+                        </div>
+                    </div>
+                </form>
+
+
+
+                <script language='javascript'>
+                    $('[data-slider]')
+                            .each(function () {
+                                var input = $(this);
+                                $('<div>').addClass('smiley').attr('style', 'position: relative; float:left; clear: top; margin:10px 20px 10px 10px; top: -10px; ').insertAfter($(this));
+                            })
+                            .bind('slider:changed', function (event, data) {
+                                $(this).nextAll('.smiley:first').jSmiley('happiness', (data.value.toFixed(3) - 5) / 5);
+                            });
+                    //.bind('slider:ready', function(event, data) { $this.attr('value',5); });
+                    $('.smiley').each(function () {
+                        var smiley = $(this);
+                        smiley.width(40);
+                        smiley.height(40);
+                        smiley.jSmiley();
+                    });
+                </script>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% include 'templates/home/footer.html' %}
+
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+    }
+</style>
+<script>
+    function cleanup(e) {
+        var res = $.getJSON("{% static "js\profanity\swearWords.json" %}", function(json) {
+            var text = e.value;
+            var text2 = e.value;
+            var a = 0;
+            for (var i = 0; i < json.length ; i++) {
+                text = text.replace(json[i], "###");
+            }
+            e.value = text;
+        });
+    }
+
+    var availableCourses;
+    var availableProfs;
+    $(function() {
+        availableCourses = [
+            {% for course in clist %}
+                "{{  course.courseID  }} - {{  course.name  }}",
+            {% endfor %}
+        ];
+
+        availableProfs = [
+            {% for prof in plist %}
+                "{{ prof.name }}",
+            {% endfor %}
+        ];
+
+        $( "#prof" ).autocomplete({
+            source: availableProfs
+        });
+
+        $( "#course" ).autocomplete({
+            source: availableCourses
+        });
+    });
+
+    function validate() {
+        var c = 0, p = 0;
+        for (var i = 0;  i < availableCourses.length; i++) {
+            if (availableCourses[i] == $("#course").val()) {
+                c = 1;
+            }
+        }
+
+        for (var i = 0; i < availableProfs.length; i++) {
+            if (availableProfs[i] == $("#prof").val()) {
+                p = 1;
+            }
+        }
+
+        if (c == 1 && p == 1) {
+            return true;
+        }
+        else if (c == 0 && p == 1) {
+            $("#course").popover({
+                placement: "bottom",
+                content: "Hey, Which Course are you reviewing!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#course").popover('show');
+            $("#Submit").popover({
+                placement: "top",
+                content: "Look above, you made an error!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#Submit").popover('show');
+            return false;
+        }
+        else if (p == 0 && c == 1) {
+            $("#prof").popover({
+                placement: "bottom",
+                content: "Hey, Who is this Professor!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#prof").popover('show');
+            $("#Submit").popover({
+                placement: "top",
+                content: "Look above, you made an error!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#Submit").popover('show');
+            return false;
+        }
+        else {
+            $("#course").popover({
+                placement: "bottom",
+                content: "Hey, Which Course are you reviewing!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#course").popover('show');
+            $("#prof").popover({
+                placement: "bottom",
+                content: "Hey, Who is this Professor!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#prof").popover('show');
+             $("#Submit").popover({
+                placement: "top",
+                content: "Look above, you made an error!",
+                html: true,
+                animation: true,
+                delay: {show: 500, hide: 100},
+                container: 'form'});
+            $("#Submit").popover('show');
+            return false;
+        }
+    }
+
+    $("#review-comment").tooltip({
+
+      // place tooltip on the right edge
+      position: "center right",
+
+      // a little tweaking of the position
+      offset: [-2, 10],
+
+      // use the built-in fadeIn/fadeOut effect
+      effect: "fade",
+
+      // custom opacity setting
+      opacity: 0.7
+      });
+</script>
+
+
+</body>
+</html>

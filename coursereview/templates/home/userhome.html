@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{% include 'templates/home/user_navbar.html' %}
+
+<html>
+<body>
+{% load staticfiles %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"> </script>
+
+<script type="text/javascript">var myFunc = function() {
+    if ( {{ hasReview }} ) {
+        document.getElementById('span2').style.display = 'none';
+    }
+};
+window.onload = myFunc;
+</script>
+
+
+<link href="{% static "css/datepicker.css" %}" media="screen" rel="stylesheet"/>
+<!-- ##   Carousel   ###--->
+<div id="wrap">
+    <div class="container">
+        <div class="row">
+            <div class="span6">
+                <form class="form-horizontal" id="userform" method="post">
+                    <fieldset>
+
+                        <legend  style="margin-bottom: 0;"> Your Profile </legend>
+                        <div class="control-group"> Hi {{ name }}! Here's what we know about you. </div>
+                        <div class="control-group">
+                            <label class="control-label" for="name">Your Name:</label>
+                            <div class="controls">
+                                <input id="name" name="name" type="text" value="{{ name }}" class="input-medium">
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="sex">Your Gender:</label>
+                            <div class="controls">
+                                <label class="radio" for="sex-0">
+                                    <input type="radio" name="sex" id="sex-0" value="M"
+                                           {% ifequal sex "M" %}
+                                           checked="checked"
+                                           {% endifequal %}>
+                                    Male
+                                </label>
+                                <label class="radio" for="sex-1">
+                                    <input type="radio" name="sex" id="sex-1" value="F"
+                                            {% ifequal sex "F" %}
+                                           checked="checked"
+                                            {% endifequal %}>
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="control-group">
+                            <label class="control-label" for="type">Account Type:</label>
+                            <div class="controls">
+                                <label class="radio" for="type-0">
+                                    <input type="radio" name="radios" id="radios-0" value="Professor"
+                                           {% ifequal type "P" %}
+                                            checked="checked"
+                                           {% endifequal %} disabled>
+                                    Professor
+                                </label>
+                                <label class="radio" for="type-1">
+                                    <input type="radio" name="radios" id="radios-1" value="Student"
+                                          {% ifequal type "S" %}
+                                            checked="checked"
+                                           {% endifequal %} disabled>
+                                    Student
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="DOB"> Date of Birth: </label>
+                            <div class="controls">
+                            <div class="input-append date" id="dpYears" data-date="{{ DOB }}" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                                <input name="DOB" id="DOB" class="input-medium" type="text" value="{{ DOB }}" readonly="">
+                                <span class="add-on" id="datepick"><i class="icon-calendar"></i></span>
+                            </div>
+                            </div>
+                            <script>
+                                $('#dpYears').datepicker();
+                            </script>
+
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="email">Email:</label>
+                            <div class="controls">
+                                <div class="input-append">
+                                    <input id="email" name="email" class="input-medium" placeholder="{{ email }}" type="text" readonly>
+                                    <span class="add-on">@iiitd.ac.in</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="control-group" id="submitButtonGroup" hidden="True">
+                          <div class="controls">
+                            <input type="submit" id="submitUserForm" class="btn btn-success" />
+                          </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="span6"></div>
+
+        <div class="span2" id="span2">
+            <form class="form-horizontal" id="userform" method="post">
+                    <fieldset>
+
+                        <legend  style="margin-bottom: 0;"> Reminder </legend>
+                        <div class="control-group">You have not written any reviews. <a href="/review">Write one now.</a></div>
+                    </fieldset>
+            </form>
+        </div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    $(function(){
+        $("#userform").change(function() {
+            $('#submitButtonGroup').show(500);
+        });
+        $("#datepick").click(function() {
+            $('#submitButtonGroup').show(500);
+        })
+    })
+</script>
+
+
+{% include 'templates/home/footer.html' %}
+</html>

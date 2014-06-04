@@ -1,0 +1,172 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'templates/home/user_navbar.html' %}
+</head>
+<body>
+<div class="container">
+    <div class="inner-page">
+        <div class="row">
+            <div class="span11">
+                <h3 class="page-header">Stats</h3>
+            </div>
+
+            <div class="span5">
+
+                <div class="nav-box">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-header">Registered Students</li>
+                        <li class="nav-content">{{ students }}</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="span6">
+                <div class="nav-box">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-header">Registered Professors</li>
+                        <li class="nav-content">{{ profs }}</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="span11">
+                <div class="nav-box">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-header">Top Reviewers</li>
+                        {% for reviewer in topByUp %}
+                            <li><span class="nav-list-content">{{ reviewer.2 }}</span><span
+                                    class="text">has</span><span
+                                    class="upvotes">{{ reviewer.0 }}</span><span
+                                    class="text">votes from</span><span class="upvotes">{{ reviewer.1 }}</span><span
+                                    class="text">review{{ reviewer.1|pluralize }}</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span7">
+                <div class="nav-box">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-header">Courses Reviewed</li>
+                        <li><span class="nav-content">{{ coursesReviewed }}</span><span class="text"> of </span><span
+                                class="nav-content">{{ courses }}</span><span class="text"> courses</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="nav-box">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-header">Total Reviews</li>
+                        <li class="nav-content">{{ totalReviews }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span11">
+                <div class="nav-box">
+                    <ul class="nav nav-sidebar">
+                        <li class="nav-header">Most Active Reviewers</li>
+                        {% for reviewer in topByRev %}
+                            <li><span class="nav-list-content">{{ reviewer.2 }}</span><span
+                                    class="text">has written</span><span
+                                    class="upvotes">{{ reviewer.0 }}</span><span
+                                    class="text">review{{ reviewer.0|pluralize }}</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'templates/home/footer.html' %}
+</body>
+
+
+<style type="text/css">
+
+    .rowh {
+        height: 1000px;
+    }
+
+    .nav-header {
+        font-size: 20px;
+        text-align: center;
+        padding-top: 5px;
+    }
+
+    .nav-sidebar {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-bottom: 0;
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .nav-sidebar > li {
+        text-align: center;
+    }
+
+    .nav-sidebar > li > a,
+    .nav-sidebar .nav-header {
+        margin-right: -15px;
+        margin-left: -15px;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .text {
+        margin-left: 5px;
+        font-size: 24px;
+        color: #999999;
+    }
+
+    .upvotes {
+        font-size: 30px;
+        margin-left: 10px;
+        color: green;
+    }
+
+    .nav-list-content {
+        list-style-type: none;
+        line-height: 45px;
+        font-size: 30px;
+        text-align: center;
+        color: #e27c6b;
+        font-weight: 400;
+    }
+
+    .nav-content {
+        list-style-type: none;
+        line-height: 60px;
+        font-size: 45px;
+        text-align: center;
+        color: #e27c6b;
+        font-weight: 400;
+    }
+
+    .nav-box {
+        min-height: 20px;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #ffffff;
+        border: 1px solid #d8d8d8;
+        border-bottom-width: 2px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav > li > a:hover,
+    .nav > li > a:focus {
+        text-decoration: none;
+        background-color: #ffffff;
+    }
+</style>
+</html>
