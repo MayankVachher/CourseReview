@@ -48,7 +48,9 @@
                 <li id="TablePicker" class='{{ TTableClass }}'><a href="/ttable">Pick Courses!</a></li>
 
                 <li class="signin">
-                    <div onclick="location.href='/google/login/'">
+                    <!--div onclick="location.href='/google/login/'"-->
+                    <div>
+                        <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
                         <button class="btn" id="signin-button" onmouseover="showIIITD(this)" title="For iiitd.ac.in accounts only.">
                             <i class="icon-signin"></i> Sign in
                         </button>
@@ -62,6 +64,7 @@
                                   });
                             }
                         </script>
+                        </a>
                     </div>
                 </li>
             </ul>

@@ -1,6 +1,6 @@
 # Django settings for coursereview project.
 import os
-
+from dev_file import *
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -14,23 +14,13 @@ STATIC_URL = '/static/'
 MANAGERS = ADMINS
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-    #     'NAME': 'course_rev_db', # Or path to database file if using sqlite3.
-    #     # The following settings are not used with sqlite3:
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'revcourse',
-    #     'HOST': '', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-    #     'PORT': '5432', # Set to empty string for default.
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'courserev_db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'adityag1',
-        'PASSWORD': 'courserev',
-        'HOST': 'localhost',                      				   # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '3306',			                      # Set to empty string for default.
+        'ENGINE': db_engine,
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_password,
+        'HOST': db_host,
+        'PORT': db_port,			                      # Set to empty string for default.
     }
 }
 
@@ -98,7 +88,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = ')3781j6twns2otcwi_)xw7q4ou&hv5*&i#kqjw^81dy9$=%j+4'
+SECRET_KEY = secret_key
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -109,11 +99,15 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # other context processors....
-    'django.core.context_processors.static',
     'django.contrib.auth.context_processors.auth',
-    # FORM DEFAULTS BELOW
+    'django.core.context_processors.static',
     'django.core.context_processors.request',
+    'django.core.context_processors.debug',
 
+    'django.contrib.messages.context_processors.messages',
+    #OAUTH2 Below
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -148,20 +142,26 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
-    'django.contrib.admindocs',sy
+    'django.contrib.admindocs',
     #'books',
     'coursereview',
-    'django_openid_auth',
+    #'django_openid_auth', WAS BEING USED EARLIER
     # DO NOT REMOVE
     #'forms_builder.forms',
     'django_select2',
     'south',
     'social.apps.django_app.default',
+
+    #May not be needed
+    #    'social.ap'
+    #    'ps.django_app.default',
+
 )
 
 AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
     "django.contrib.auth.backends.ModelBackend",
-    'auth.GoogleBackend',
+    # auth.GoogleBackend', NO LONGER USED, OPENID
 )
 
 # A sample logging configuration. The only tangible logging
@@ -189,24 +189,32 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-        },
-    }
+            },
+        }
 }
 
 LOGIN_REDIRECT_URL = '/home/'
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
-OPENID_SSO_SERVER_URL = 'https://www.google.com/accounts/o8/id'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = social_auth_google_oauth2_key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = social_auth_google_oauth2_secret
+SOCIAL_AUTH_USER_MODEL = 'userprofile'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.webfaction.com'
-EMAIL_HOST_USER = 'coursereview'
-EMAIL_HOST_PASSWORD = 'courserev_123'
-DEFAULT_FROM_EMAIL = 'feedback@coursereview.co.in'
-SERVER_EMAIL = 'feedback@coursereview.co.in'
-EMAIL_PORT = 587
 
-MAX_UPLOAD_SIZE = "20971520"
-#Forms - email sent by default to staff
-FORMS_BUILDER_SEND_FROM_SUBMITTER = False
+
+"""
+# Auth Details
+SOCIAL_AUTH_LOGIN_URL = '/login/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+#Used to redirect the user once the auth process ended successfully. The value of ?next=/foo is used if it was present
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
+#URL where the user will be redirected in case of an error
+SOCIAL_AUTH_LOGIN_URL = '/login-url/'
+#Is used as a fallback for LOGIN_ERROR_URL
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/new-users-redirect-url/'
+#Used to redirect new registered users, will be used in place of SOCIAL_AUTH_LOGIN_REDIRECT_URL if defined.
+SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/new-association-redirect-url/'
+#Like SOCIAL_AUTH_NEW_USER_REDIRECT_URL but for new associated accounts (user is already logged in). Used in place of SOCIAL_AUTH_LOGIN_REDIRECT_URL
+SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/account-disconnected-redirect-url/'
+#The user will be redirected to this URL when a social account is disconnected
+SOCIAL_AUTH_INACTIVE_USER_URL = '/inactive-user/'
+#Inactive users can be redirected to this URL when trying to authenticate.
+"""

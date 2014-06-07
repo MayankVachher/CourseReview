@@ -18,13 +18,20 @@ from forms import *
 
 def home(request):
     logged_in = request.user.is_authenticated()
+    context = RequestContext(request,
+                           {'request': request,
+                            'user': request.user})
     if not logged_in:
         return render(request, 'templates/home/bhome.html',
-                      {'user': request.user, 'title': "CourseReview - Home",'homeNavClass':"active"})
+                      {'user': request.user,
+                       'title': "CourseReview - Home",
+                       'homeNavClass':"active",
+                       'request':request
+                      })
     else:
         #return user(request)
         return render(request, 'templates/home/bhome.html',
-        {'user': request.user, 'title': "CourseReview - Welcome"})
+        {'user': request.user, 'request':request, 'title': "CourseReview - Welcome"})
 
 
 def faq(request):
