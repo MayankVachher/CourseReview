@@ -18,6 +18,7 @@
 *.ipr
 *.is
 *.iml
+*.pyc
 
 ## Additional for IntelliJ
 out/

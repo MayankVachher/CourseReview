@@ -11,16 +11,14 @@ from django.template import RequestContext
 import time
 from django.template import Context, Template
 
-from models import FeedbackForm, Review, Course, User, UserProfile, Faculty
+from models import FeedbackForm, Review, Course, UserProfile, Faculty
 from stats import *
 from forms import *
+from auth_receiver import *
 
 
 def home(request):
     logged_in = request.user.is_authenticated()
-    context = RequestContext(request,
-                           {'request': request,
-                            'user': request.user})
     if not logged_in:
         return render(request, 'templates/home/bhome.html',
                       {'user': request.user,
@@ -29,10 +27,7 @@ def home(request):
                        'request':request
                       })
     else:
-        #return user(request)
-        return render(request, 'templates/home/bhome.html',
-        {'user': request.user, 'request':request, 'title': "CourseReview - Welcome"})
-
+        return user(request)
 
 def faq(request):
     return render(request, 'templates/home/faq.html',
@@ -47,17 +42,17 @@ def features(request):
 def user(request):
     logged_in = request.user.is_authenticated()
     if not logged_in:
-        return render(request, 'templates/home/bhome.html',
-                      {'user': request.user, 'title': "CourseReview - Welcome", 'homeNavClass':"active"})
+        #return render(request, 'templates/home/bhome.html',{'user': request.user, 'title': "CourseReview - Welcome", 'homeNavClass':"active"})
+        return home(request)
     elif request.method == "POST":
         print request.POST.items()
-        p = UserProfile.objects.get(user=request.user)
+        p = UserProfile.objects.get(username=request.user)
         p.name = request.POST.get("name")
         p.sex = request.POST.get("sex")
         p.dob = datetime.strptime(request.POST.get("DOB"),"%d-%m-%Y").date()
         p.save()
     else:
-        p = UserProfile.objects.get(user=request.user)
+        p = UserProfile.objects.get(username=request.user)
     if p.dob:
         dob = p.dob.strftime("%d-%m-%Y")
     else:
@@ -456,7 +451,7 @@ def allCourses(request):
     if not logged_in:
         raise Http404
     else:
-        myUser = UserProfile.objects.get(user = request.user)
+        myUser = UserProfile.objects.get(username = request.user)
         myList = myUser.watchList.all()
         cid = []
         for c in myList:

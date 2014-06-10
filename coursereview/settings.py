@@ -99,15 +99,15 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # other context processors....
-    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.core.context_processors.debug',
 
-    'django.contrib.messages.context_processors.messages',
-    #OAUTH2 Below
-    'social.apps.django_app.context_processors.backends',
-    'social.apps.django_app.context_processors.login_redirect',
+    'django.contrib.auth.context_processors.auth',
+    #'django.contrib.messages.context_processors.messages',
+    # allauth specific context processors
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -132,6 +132,13 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(__file__), '').replace('\\', '/'),
 )
 
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+    # auth.GoogleBackend', NO LONGER USED, OPENID
+    #'social.backends.google.GoogleOAuth2',
+)
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -150,18 +157,11 @@ INSTALLED_APPS = (
     #'forms_builder.forms',
     'django_select2',
     'south',
-    'social.apps.django_app.default',
 
-    #May not be needed
-    #    'social.ap'
-    #    'ps.django_app.default',
-
-)
-
-AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
-    "django.contrib.auth.backends.ModelBackend",
-    # auth.GoogleBackend', NO LONGER USED, OPENID
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -193,14 +193,26 @@ LOGGING = {
         }
 }
 
-LOGIN_REDIRECT_URL = '/home/'
+
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = social_auth_google_oauth2_key
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = social_auth_google_oauth2_secret
-SOCIAL_AUTH_USER_MODEL = 'userprofile'
 
+#ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+#ACCOUNT_USER_MODEL_EMAIL_FIELD = None
 
+LOGIN_REDIRECT_URL = '/home/'
+AUTH_USER_MODEL = 'coursereview.UserProfile'
 
 """
+# Unused Login Parameters
+AUTH_USER_MODEL = 'coursereview.UserProfile'
+SOCIAL_AUTH_USER_MODEL = 'coursereview.UserProfile'
+# LOGIN_REDIRECT_URL = '/home/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
+
+
+
 # Auth Details
 SOCIAL_AUTH_LOGIN_URL = '/login/'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'

@@ -1,14 +1,17 @@
 
 import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django import forms
 
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, unique=True)
-    email = models.CharField(max_length=40, blank=True, null=True)
+# AbstractUser already has the following fields and others.
+# username, first_name, last_name
+# email, password, groups
+class UserProfile(AbstractUser):
+    REQUIRED_FIELDS = ["email"]
+    #user = models.OneToOneField(User, unique=True)
+    #email = models.CharField(max_length=40, blank=True, null=True)
     name = models.CharField(max_length=40, blank=True, null=True)
     typeChoice = ((u'S', u'Student'), (u'P', u'Professor'))
     type = models.CharField(max_length=1, choices=typeChoice)
@@ -37,7 +40,7 @@ class Faculty(models.Model):
 
 
 class Review(models.Model):
-    reviewer = models.ForeignKey(User, related_name='reviewReviewer')
+    reviewer = models.ForeignKey(UserProfile, related_name='reviewReviewer')
     course = models.ForeignKey('Course', blank=False)
     #please do not touch. DateField, not TimeField.
     createdTime = models.DateField()
@@ -50,9 +53,9 @@ class Review(models.Model):
 
     faculty = models.ForeignKey('Faculty', blank=False)
     upvotes = models.SmallIntegerField(default=0)
-    upvoters = models.ManyToManyField(User, related_name="upvotedRevs")
-    downvoters = models.ManyToManyField(User, related_name="downwotedRevs")
-    reporter = models.ManyToManyField(User, related_name="reports")
+    upvoters = models.ManyToManyField(UserProfile, related_name="upvotedRevs")
+    downvoters = models.ManyToManyField(UserProfile, related_name="downwotedRevs")
+    reporter = models.ManyToManyField(UserProfile, related_name="reports")
     #fav_by
 
     easeOfScoring = models.PositiveSmallIntegerField(default=5)
@@ -78,7 +81,7 @@ class Course(models.Model):
 
 
 class CourseCombination(models.Model):
-    favOf = models.ForeignKey(User)
+    favOf = models.ForeignKey(UserProfile)
     courses = models.ManyToManyField(Course)
 
 
