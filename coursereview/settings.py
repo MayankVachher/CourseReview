@@ -193,40 +193,10 @@ LOGGING = {
         }
 }
 
-
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = social_auth_google_oauth2_key
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = social_auth_google_oauth2_secret
-
-#ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-#ACCOUNT_USER_MODEL_EMAIL_FIELD = None
-
 LOGIN_REDIRECT_URL = '/home/'
 AUTH_USER_MODEL = 'coursereview.UserProfile'
 
-"""
-# Unused Login Parameters
-AUTH_USER_MODEL = 'coursereview.UserProfile'
-SOCIAL_AUTH_USER_MODEL = 'coursereview.UserProfile'
-# LOGIN_REDIRECT_URL = '/home/'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/home/'
-
-
-
-# Auth Details
-SOCIAL_AUTH_LOGIN_URL = '/login/'
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
-#Used to redirect the user once the auth process ended successfully. The value of ?next=/foo is used if it was present
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
-#URL where the user will be redirected in case of an error
-SOCIAL_AUTH_LOGIN_URL = '/login-url/'
-#Is used as a fallback for LOGIN_ERROR_URL
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/new-users-redirect-url/'
-#Used to redirect new registered users, will be used in place of SOCIAL_AUTH_LOGIN_REDIRECT_URL if defined.
-SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = '/new-association-redirect-url/'
-#Like SOCIAL_AUTH_NEW_USER_REDIRECT_URL but for new associated accounts (user is already logged in). Used in place of SOCIAL_AUTH_LOGIN_REDIRECT_URL
-SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/account-disconnected-redirect-url/'
-#The user will be redirected to this URL when a social account is disconnected
-SOCIAL_AUTH_INACTIVE_USER_URL = '/inactive-user/'
-#Inactive users can be redirected to this URL when trying to authenticate.
-"""
+SOCIALACCOUNT_PROVIDERS = \
+    { 'google':
+        { 'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
+          'AUTH_PARAMS': { 'access_type': 'online' } }}
