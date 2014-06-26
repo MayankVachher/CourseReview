@@ -283,7 +283,7 @@ def seereview(request):
         prof = x.faculty.name
         overall = [x.easeOfScoring, x.easeOfContent, x.industryApplication, x.interesting, x.workload, x.qualityTeaching, x.relevance, x.technicality, x.projectBurden]
         overall = round(1.0*sum(overall)/len(overall), 3)
-        reviewer = UserProfile.objects.get(user = x.reviewer)
+        reviewer = x.reviewer
         return render(request, 'templates/home2/review_review.html',
                       {'user': request.user, 'rev': x, 'overall': overall, 'reviewer': reviewer,
                        'bar': int(overall*10), 'title': "CourseReview - Review", 'prof': prof})
@@ -295,7 +295,7 @@ def vote(request):
         if GET.has_key(u'pk') and GET.has_key(u'vote'):
             pk = int(GET[u'pk'])
             vote = GET[u'vote']
-            myUser = User.objects.get(email = GET[u'myUser'])
+            myUser = UserProfile.objects.get(email = GET[u'myUser'])
             myReview = Review.objects.get(pk=pk)
             if vote == u"up":
                 if myUser in myReview.downvoters.all():
@@ -386,7 +386,7 @@ def report(request):
         GET = request.GET
         if GET.has_key(u'pk'):
             pk = int(GET[u'pk'])
-            myUser = User.objects.get(email = GET[u'myUser'])
+            myUser = UserProfile.objects.get(email = GET[u'myUser'])
             myReview = Review.objects.get(pk=pk)
             results['mess'] = "You have already reported this review."
             if myUser not in myReview.reporter.all():
@@ -422,7 +422,7 @@ def seecourse(request):
                 courseOverall[i] += overall[i]
             lname = "Anonymous"
             if not x.anon:
-                lname = UserProfile.objects.get(user = x.reviewer).name
+                lname = x.reviewer.name
             lrevs += [[x.upvotes, x.id, round(sum(overall)*1.0/len(overall), 3), lname]]
         lrevs.sort()
         lrevs = lrevs[::-1]

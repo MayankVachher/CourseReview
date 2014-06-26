@@ -37,6 +37,19 @@ class Faculty(models.Model):
     #Foreign key to many reviews (as faculty too)
     teaches = models.ManyToManyField('Course', related_name="taughtBy")
 
+def ReviewAdder(course, review):
+    course.numReviews += 1
+
+    course.easeOfScoring += review.easeOfScoring
+    course.industryApplication += review.industryApplication
+    course.interesting += review.interesting
+    course.easeOfContent += review.easeOfContent
+    course.workload += review.workload
+    course.qualityTeaching += review.qualityTeaching
+    course.relevance += review.relevance
+    course.technicality += review.technicality
+    course.projectBurden += review.projectBurden
+
 
 
 class Review(models.Model):
@@ -45,7 +58,7 @@ class Review(models.Model):
     #please do not touch. DateField, not TimeField.
     createdTime = models.DateField()
     #Is the review anonymous?
-    anon = models.BooleanField()
+    anon = models.BooleanField(default=False)
     yearChoices = tuple([(x, x) for x in range(2007, datetime.datetime.now().year + 1)])
     yearTaken = models.IntegerField(choices=yearChoices)
     semTaken = models.PositiveSmallIntegerField(default=1)
@@ -75,6 +88,19 @@ class Course(models.Model):
     courseID = models.CharField(max_length=6, blank="True", null="True")
     name = models.CharField(max_length=256, blank="True", null="True")
     hasProject = models.BooleanField(default=False)
+
+    numReviews = models.IntegerField(default=0)
+
+    easeOfScoring = models.IntegerField(default=5)
+    industryApplication = models.IntegerField(default=5)
+    interesting = models.IntegerField(default=5)
+    easeOfContent = models.IntegerField(default=5)
+    workload = models.IntegerField(default=5)
+    qualityTeaching = models.IntegerField(default=5)
+    relevance = models.IntegerField(default=5)
+    technicality = models.IntegerField(default=5)
+    projectBurden = models.IntegerField(default=5)
+
     #taught_by
 
     #Foreign key to many reviews

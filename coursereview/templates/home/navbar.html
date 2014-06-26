@@ -50,20 +50,20 @@
                 <li class="signin">
                     <!--div onclick="location.href='/google/login/'"-->
                     <div>
-                        <a href="/accounts/login">
-                        <button class="btn" id="signin-button" onmouseover="showIIITD(this)" title="For iiitd.ac.in accounts only.">
-                            <i class="icon-signin"></i> Sign in
-                        </button>
-                        <script>
-                            function showIIITD(x){
-                                x.tooltip({
-                                  position: "center right",
-                                  offset: [-2, 10],
-                                  effect: "fade",
-                                  opacity: 0.7
-                                  });
-                            }
-                        </script>
+                        <a title="Google" class="socialaccount_provider google" href="/accounts/google/login/?process=login">
+                            <button class="btn" id="signin-button" onmouseover="showIIITD(this)" title="For iiitd.ac.in accounts only.">
+                                <i class="icon-signin"></i> Sign in
+                            </button>
+                            <script>
+                                function showIIITD(x){
+                                    x.tooltip({
+                                      position: "center right",
+                                      offset: [-2, 10],
+                                      effect: "fade",
+                                      opacity: 0.7
+                                      });
+                                }
+                            </script>
                         </a>
                     </div>
                 </li>

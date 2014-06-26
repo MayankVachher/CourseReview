@@ -47,19 +47,25 @@
                         <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Browse Reviews</a></li>
                     </ul>
                     </div-->
-
                 <li class="signout">
+                    <form method="post" action="/accounts/logout/">
+                            <button type="submit" class="btn" id="signout-button">
+                                <i class="icon-signin"></i> Log out
+                            </button>
+                    </form>
+                </li>
+                <!--li class="signout">
                     <div onclick="location.href='/logout'">
                         <button class="btn" id="signout-button">
                             <i class="icon-signin"></i> Log out
                         </button>
                     </div>
-                </li>
-                <li>
+                </li-->
+                <!--li>
                     <div class="feedback" data-toggle="modal" data-target="#Feedback">
                         <div class="feedback-text"><p></p> <b> F E E D B A C K </b> </div>
                     </div>
-                </li>
+                </li-->
             </ul>
         </div>
     </div>
