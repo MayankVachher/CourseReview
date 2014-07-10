@@ -36,8 +36,8 @@ def getTopReviewers(n):
             d[x.reviewer][1] += 1
         else:
             d[x.reviewer] = [x.upvotes, 1]
-    votes = [[d[x][0], d[x][1], UserProfile.objects.get(user=x).name] for x in d.keys()]
-    revs = [[d[x][1], d[x][0], UserProfile.objects.get(user=x).name] for x in d.keys()]
+    votes = [[d[x][0], d[x][1], UserProfile.objects.get(username=x).name] for x in d.keys()]
+    revs = [[d[x][1], d[x][0], UserProfile.objects.get(username=x).name] for x in d.keys()]
     votes.sort()
     revs.sort()
     print votes, revs

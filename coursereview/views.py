@@ -323,7 +323,7 @@ def watch(request):
             courseID = GET[u'myCourse']
             courseID = courseID.encode('ascii', 'ignore')
             text = GET[u'text']
-            myUser = UserProfile.objects.get(email = GET[u'myUser'])
+            myUser = UserProfile.objects.get(username = GET[u'myUser'])
             myCourse = Course.objects.get(courseID = courseID)
             if text == u"Watch":
                 myUser.watchList.add(myCourse)
@@ -386,7 +386,7 @@ def report(request):
         GET = request.GET
         if GET.has_key(u'pk'):
             pk = int(GET[u'pk'])
-            myUser = UserProfile.objects.get(email = GET[u'myUser'])
+            myUser = UserProfile.objects.get(username = GET[u'myUser'])
             myReview = Review.objects.get(pk=pk)
             results['mess'] = "You have already reported this review."
             if myUser not in myReview.reporter.all():
